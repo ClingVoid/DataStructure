@@ -76,6 +76,15 @@ int findlist(Node* list, elemtype element) {
 	}
 	return 0;
 }
+int getlengh(Node* list) {
+	int len = 0;
+	list = list->Next;
+	while (list) {
+		list = list->Next;
+		len++;
+	}
+	return len;
+}
 int main()
 {
 	elemtype a = 40;
@@ -88,6 +97,7 @@ int main()
 	deleteAT(head, 2);
 	printlist(head);
 	int c=findlist(head, 40);
-	printf("%d", c);
+	printf("%d\n", c);
+	printf("%d\n", getlengh(head));
 	return 0;
 }
