@@ -1,110 +1,112 @@
 #include<stdio.h>
 #include<stdlib.h>
-#define elemtype int
+#define ELEMTYPE int
 typedef struct node {
-	elemtype data;
+	ELEMTYPE data;
 	struct node* Next;
 }Node;
-Node* initlist(void) {
-	Node* list;
- list = malloc(sizeof(Node));
-	if (list ==NULL) {
+Node* __init__(void) {
+	Node* head = malloc(sizeof(Node));
+	if (head == NULL) {
 		perror("malloc");
-		return NULL;
 	}
-	list->Next = list;
-	return list;
+	head->Next = head;
+	return head;
 }
-int insertend(Node* list,elemtype element) {
-	Node* new_list = malloc(sizeof(Node));
-	if (new_list == NULL) {
-		perror("malloc");
-		return 0;
-	}
-	new_list->data = element;
-	Node* head = list;
-	while (list->Next!=head) {
-		list = list->Next;
-	}
-	new_list->Next = list->Next;
-	list->Next = new_list;
-	return 1;
-}
-int insertstart(Node* list, elemtype element) {
-	Node* new_list = malloc(sizeof(Node));
-	if (new_list == NULL) {
-		perror("malloc");
-		return 0;
-	}
-	new_list->data = element;
-	new_list->Next = list->Next;
-	list->Next = new_list;
-}
-int insertAT(Node* list, int position, elemtype element) {
-	for (int i = 0; i < position-1; i++) {
-		list = list->Next;
-	}
-	Node* new_list = malloc(sizeof(Node));
-	if (new_list == NULL) {
-		perror("malloc");
-		return 0;
-	}
-	new_list->Next = list->Next;
-	list->Next = new_list;
-	return 1;
-}
-int deletelist(Node* list, int position) {
-	if (list->Next == list) {
-		return 0;
-	}
-	for (int i = 0; i < position-1; i++) {
-		list = list->Next;
-		if (list->Next == list) {
-			return 0;
-		}
-	}
-	Node* temporary;
-	temporary = list->Next;
-	list->Next = temporary->Next;
-	free(temporary);
-	return 1;
-}
-int printlist(Node* list) {
-	Node* temporary;
-	temporary = list->Next;
-	while (temporary !=list) {
-		printf("%d", temporary->data);
-		temporary = temporary->Next;
+int printf_every(Node* head) {
+	Node* p = head->Next;
+	if (head->Next != head) {
+	while (p != head) {
+		printf("%d\n", p->data);
+		p = p->Next;
 	}
 	return 1;
 }
-int find(Node* list,elemtype element) {
-	int i = 0;
-	Node* temporary = list->Next;
-	while (temporary != list) {
-		i++;
-		if (element == temporary->data) {
-			return i;
-		}
-	}
+	printf("the circularlist is Void");
 	return 0;
+}
+int insert_tail(Node* head, ELEMTYPE new_data) {
+	Node* p = head->Next;
+	while (p->Next != head) {
+		p = p->Next;
+	}
+	Node* new_node = malloc(sizeof(Node));
+	if (new_node == NULL) {
+		perror("malloc");
+		return 0;
+	}
+	new_node->data = new_data;
+	new_node->Next = head;
+	p->Next = new_node;
+}
+int insert_head(Node* head, ELEMTYPE new_data) {
+	Node* new_node = malloc(sizeof(Node));
+	if (new_node == NULL) {
+		perror("malloc");
+		return 0;
+	}
+	new_node->data = new_data;
+	Node* p = head->Next;
+	new_node->Next = p;
+	head->Next = new_node;
+	return 1;
+}
+int insert_AT(Node* head, int position, ELEMTYPE new_data) {
+    if (position < 1) {
+        printf("Invalid position\n");
+        return 0;
+    }
+    Node* p = head;
+    for (int i = 0; i < position - 1; i++) {
+        if (p->Next == head) {
+            printf("Position out of range\n");
+            return 0;
+        }
+        p = p->Next;
+    }
+    Node* new_node = malloc(sizeof(Node));
+    if (new_node == NULL) {
+        perror("malloc");
+        return 0;
+    }
+    new_node->data = new_data;
+    new_node->Next = p->Next;
+    p->Next = new_node;
+    return 1;
+}
 
+int delete_AT(Node* head, int position) {
+    if (head->Next == head) {
+        printf("The list is void\n");
+        return 0;
+    }
+    Node* p = head;
+    for (int i = 0; i < position - 1; i++) {
+        if (p->Next == head) {
+            printf("Position out of range\n");
+            return 0;
+        }
+        p = p->Next;
+    }
+    Node* dele = p->Next;
+    if (dele == head) {
+        printf("Position out of range\n");
+        return 0;
+    }
+    p->Next = dele->Next;
+    free(dele);
+    return 1;
 }
-int lengh(Node* list) {
-	int i = 0;
-	Node* temporary = list->Next;
-	while (temporary != list) {
-		i++;
-		temporary = temporary->Next;
-	}
-	return i;
-}
-int main()
-{
-	Node* head;
-	head = initlist();
-	insertend(head, 40);
-	insertend(head, 50);
-	printlist(head);
-	return 0;
+
+int find_data(Node* head, ELEMTYPE data) {
+    Node* p = head->Next;
+    int count = 1;
+    while (p != head) {
+        if (p->data == data) {
+            return count;
+        }
+        p = p->Next;
+        count++;
+    }
+    return 0;
 }
