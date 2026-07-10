@@ -5,16 +5,16 @@ typedef struct node {
 	ELEMTYPE data;
 	struct node* Next;
 }Node;
-Node* __init__() {
-	Node* head = malloc(sizeof(Node));
-	if (head == NULL) {
+int __init__(Node** head) {
+	*head = malloc(sizeof(Node));
+	if (*head == NULL) {
 		perror("malloc");
-		return NULL;
+		return 0;
 	}
-	head->Next = NULL;
-	return head;
+	(*head)->Next = NULL;
+	return 1;
 }
-int insert_tail(Node* head,ELEMTYPE new_data) {
+int insert_tail(Node* head, ELEMTYPE new_data) {
 	Node* new_node = malloc(sizeof(Node));
 	if (new_node == NULL) {
 		perror("malloc");
@@ -47,7 +47,7 @@ int printf_everyone(Node* head) {
 	}
 	Node* p = head->Next;
 	while (p != NULL) {
-		p = p -> Next;
+		p = p->Next;
 		printf("%d", p->data);
 	}
 	return 1;
@@ -71,23 +71,23 @@ int insert_AT(Node* head, int position, ELEMTYPE new_data) {
 	p->Next = new_node;
 	return 1;
 }
-int delete_AT(Node * head, int position) {
+int delete_AT(Node* head, int position) {
 	if (head->Next == NULL) {
 		printf("the list is void");
 		return 0;
 	}
 	Node* p = head;
-	for (int i = 0; i < position-1; i++) {
+	for (int i = 0; i < position - 1; i++) {
 		if (p == NULL) { printf("the position out of range"); return 0; }
 		p = p->Next;
 	}
 	Node* dele = p->Next;
-	if(dele==NULL){ printf("the position out of range"); return 0; }
+	if (dele == NULL) { printf("the position out of range"); return 0; }
 	p->Next = dele->Next;
 	free(dele);
 	return 1;
-	}
-int find_data(Node* head,ELEMTYPE data) {
+}
+int find_data(Node* head, ELEMTYPE data) {
 	Node* p = head->Next;
 	int count = 1;
 	while (p != NULL) {

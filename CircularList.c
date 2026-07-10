@@ -2,54 +2,55 @@
 #include<stdlib.h>
 #define ELEMTYPE int
 typedef struct node {
-	ELEMTYPE data;
-	struct node* Next;
+    ELEMTYPE data;
+    struct node* Next;
 }Node;
-Node* __init__(void) {
-	Node* head = malloc(sizeof(Node));
-	if (head == NULL) {
-		perror("malloc");
-	}
-	head->Next = head;
-	return head;
+int __init__(Node** head) {
+    *head = malloc(sizeof(Node));
+    if (*head == NULL) {
+        perror("malloc");
+        return 0;
+    }
+    (*head)->Next = head;
+    return 1;
 }
 int printf_every(Node* head) {
-	Node* p = head->Next;
-	if (head->Next != head) {
-	while (p != head) {
-		printf("%d\n", p->data);
-		p = p->Next;
-	}
-	return 1;
-}
-	printf("the circularlist is Void");
-	return 0;
+    Node* p = head->Next;
+    if (head->Next != head) {
+        while (p != head) {
+            printf("%d\n", p->data);
+            p = p->Next;
+        }
+        return 1;
+    }
+    printf("the circularlist is Void");
+    return 0;
 }
 int insert_tail(Node* head, ELEMTYPE new_data) {
-	Node* p = head->Next;
-	while (p->Next != head) {
-		p = p->Next;
-	}
-	Node* new_node = malloc(sizeof(Node));
-	if (new_node == NULL) {
-		perror("malloc");
-		return 0;
-	}
-	new_node->data = new_data;
-	new_node->Next = head;
-	p->Next = new_node;
+    Node* p = head->Next;
+    while (p->Next != head) {
+        p = p->Next;
+    }
+    Node* new_node = malloc(sizeof(Node));
+    if (new_node == NULL) {
+        perror("malloc");
+        return 0;
+    }
+    new_node->data = new_data;
+    new_node->Next = head;
+    p->Next = new_node;
 }
 int insert_head(Node* head, ELEMTYPE new_data) {
-	Node* new_node = malloc(sizeof(Node));
-	if (new_node == NULL) {
-		perror("malloc");
-		return 0;
-	}
-	new_node->data = new_data;
-	Node* p = head->Next;
-	new_node->Next = p;
-	head->Next = new_node;
-	return 1;
+    Node* new_node = malloc(sizeof(Node));
+    if (new_node == NULL) {
+        perror("malloc");
+        return 0;
+    }
+    new_node->data = new_data;
+    Node* p = head->Next;
+    new_node->Next = p;
+    head->Next = new_node;
+    return 1;
 }
 int insert_AT(Node* head, int position, ELEMTYPE new_data) {
     if (position < 1) {
