@@ -24,19 +24,20 @@ int position(char* s, char* p) {
 	int j = 0;
 	int len = strlen(s);
 	int lenp = strlen(p);
-	for (i; i < len; i++) {
-		if (j == lenp) {
-			return i-j;
-		}
-		else if (s[i] == p[j]) {
+	while (i < len) {
+		if (s[i] == p[j]) {
+			i++;
 			j++;
+			if (j == lenp) {
+				return i - j;
+			}
 		}
-		else if (s[i] != p[j]&&j>0) {
+		if (j == 0) {
+			i++;
+		}
+		else{
 			j = next[j - 1];
 		}
-		else if (s[i] != p[j] && j == 0) {
-			continue;
-		}
 	}
-	return 0;
+	return -1;
 }
